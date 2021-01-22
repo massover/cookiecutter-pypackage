@@ -1,0 +1,9 @@
+version: 2.1
+orbs:
+  docker: circleci/docker@0.5.19
+  helm: circleci/helm@0.2.3
+  slack: circleci/slack@3.4.2
+executors:
+  {{ cookiecutter.project_slug }}:
+    docker:
+      - image: circleci/python:3.7.4

@@ -1,0 +1,87 @@
+[tool.poetry]
+name = "{{ cookiecutter.project_name }}"
+version = "{{ cookiecutter.version }}"
+description = "{{ cookiecutter.project_short_description }}"
+authors = ["SimpleBet <engineering@.simplebet.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[tool.poetry.dev-dependencies]
+black = { version = "*", allow-prereleases = true }
+pytest = "*"
+pytest-cov = "*"
+pytest-mock = "*"
+pytest-xdist = "*"
+mypy = "*"
+ipython = "*"
+watchdog = "*"
+coveralls = "*"
+isort = "*"
+
+{% if 'no' not in cookiecutter.command_line_interface|lower %}
+[tool.poetry.plugins.console_scripts]
+{{ cookiecutter.project_name }} = "{{ cookiecutter.project_name }}.cli:main"
+{% endif %}
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+{% if 'no' not in cookiecutter.command_line_interface|lower %}
+[tool.poetry.plugins.console_scripts]
+{{ cookiecutter.project_name }} = "{{ cookiecutter.project_name }}.cli:main"
+{% endif %}
+
+[tool.coverage.run]
+branch = true
+data_file = ".coverage/.coverage"
+omit = [
+]
+
+[tool.isort]
+force_single_line = true
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 120
+skip = ["venv", ".venv", "media", "staticfiles"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--ds=market_predictions.config.settings.test --durations=25 --reuse-db -vv"
+norecursedirs = ["media", "staticfiles", ".git", "venv", "data", ".github", ".circleci"]
+filterwarnings = ""
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+]
+
+[tool.black]
+line-length = 120
+target-version = ['py37']
+include = '\.pyi?$'
+exclude = '''
+(
+  /(
+      \.eggs
+    | \.circleci
+    | \.git
+    | \.github
+    | \.hg
+    | \.mypy_cache
+    | \.pytest_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+    | staticfiles
+    | media
+  )/
+)
+'''
